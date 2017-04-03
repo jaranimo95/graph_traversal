@@ -43,10 +43,8 @@ public class Edge implements Comparable<Edge> {
     public Edge(int v, int w, String type, int bandwidth, int length) {
         if (v < 0) throw new IllegalArgumentException("vertex index must be a nonnegative integer");
         if (w < 0) throw new IllegalArgumentException("vertex index must be a nonnegative integer");
-        if (type.compareTo("copper") != 0 || type.compareTo("optic") != 0)
-            throw new IllegalArgumentException("type must be copper or optic");
-        if (Integer.isNaN(bandwidth)) throw new IllegalArgumentException("bandwidth is NaN");
-        if (Integer.isNaN(length)) throw new IllegalArgumentException("length is NaN");
+        if (type.compareTo("copper") != 0 && type.compareTo("optical") != 0)
+            throw new IllegalArgumentException("type must be copper or optical");
         this.v = v;
         this.w = w;
         this.type = type;
@@ -126,7 +124,7 @@ public class Edge implements Comparable<Edge> {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        Edge e = new Edge(12, 34, "copper", 5.67, 2);
+        Edge e = new Edge(12, 34, "copper", 5, 2);
         StdOut.println(e);
     }
 }

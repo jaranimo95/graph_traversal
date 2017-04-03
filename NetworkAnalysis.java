@@ -4,26 +4,30 @@ import java.io.FileNotFoundException;
 
 public class NetworkAnalysis {
 	
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException, IllegalArgumentException {
 
 		Scanner reader = new Scanner(new File(args[0]));
 		
 		System.out.println("---Network Info---");
 		EdgeWeightedGraph g = new EdgeWeightedGraph(reader.nextInt()); // Set scanner to read in info from file
-		System.out.println("# of Vertices: "+g.V());
-		int endpoint;
+		System.out.println("# of Vertices: "+g.V()+"\n");
+		int v,w;
 		String type;
 		int bandwidth;
 		int length;
 
-		EdgeWeightedGraph g = new EdgeWeightedGraph(v);
 		while(reader.hasNextLine()) {    // Reads in all data in from file, abiding by the predetermined format
-			endpoint = reader.nextInt();
-				type = reader.nextLine();
+				   v = reader.nextInt();
+				   if (v < 0 || v >= g.V())
+				   	throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (g.V()-1));
+				   w = reader.nextInt();
+				   if (w < 0 || w >= g.V())
+				   	throw new IllegalArgumentException("vertex " + w + " is not between 0 and " + (g.V()-1));
+				type = reader.next();
 		   bandwidth = reader.nextInt();
 		      length = reader.nextInt();
-		    System.out.println("Endpoint: "+endpoint+"\nEdge Type: "+type+"\n+Bandwidth: "+bandwidth+"\nLength: "+length+"\n");
-		    g.addEdge(new Edge(e, endpoint, type, bandwidth, length));
+		    System.out.println("V: "+v+"\nW: "+w+"\nEdge Type: "+type+"\nBandwidth: "+bandwidth+"\nLength: "+length+"\n");
+		    g.addEdge(new Edge(v, w, type, bandwidth, length));
 		}
 
 		reader = new Scanner(System.in); // Reset scanner to act as our input reader from the keyboard
@@ -43,27 +47,27 @@ public class NetworkAnalysis {
 				}
 			}    
 				 if (choice == 1) lowestLatencyPath(g);
-			else if (choice == 2) // copperOnlyConnection();
+			/*else if (choice == 2) // copperOnlyConnection();
 			else if (choice == 3) // maxBandwidthPath();
 			else if (choice == 4) // lowestAvgLatencyMST();
-			else if (choice == 5) // articulationPoints();
+			else if (choice == 5) // articulationPoints();*/
 			else if (choice == 6) break;
 		}
 		//reader.close();
 	}
 
 	// latency = length / bandwidth
-	private void lowestLatencyPath(EdgeWeightedGraph g) throws IllegalArgumentException {
+	private static void lowestLatencyPath(EdgeWeightedGraph g) throws IllegalArgumentException {
 		
 		Scanner reader = new Scanner(System.in);
-		int v, w;
+		/*int v, w;
 
 		System.out.print("Please enter the starting vertex: ");
 		v = reader.nextInt();
 		g.validateVertex(v);
 		System.out.print("Please enter the ending vertex: ");
 		w = reader.nextInt();
-		g.validateVertex(w);
+		g.validateVertex(w);*/
 
 
 	}
