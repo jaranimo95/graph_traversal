@@ -18,6 +18,7 @@ Your program should operate entirely via a console interface menu (no GUI).
 		* Finally, an integer states the length of the cable in meters.
 		* E.g., the line "0 5 optical 10000 25" describes an edge between vertex 0 and vertex 5 that represents a 25 meter long optical cable with bandwidth of 10 gigabits per second.
 	* You should assume that all cables are full duplex and hence represent connections in both directions (e.g., in the example above data can flow from vertex 0 to vertex 5 at 10 gigabits per second and from vertex 5 to vertex 0 at 10 gigabits per second simultaneously).
+<<<<<<< HEAD
 	* Bc of this, we add two edges to the adjacency list upon connecting vertices, such that we add w to adj[v] and v to adj[w]
 2. You must internally represent the graph as an adjacency list.
 3. After loading the graph from the specified file, your program should present the user with a menu with the following options:
@@ -36,6 +37,25 @@ Your program should operate entirely via a console interface menu (no GUI).
 	e. Determine whether or not the graph would remain connected if __any two vertices in the graph were to fail__.
 		-  Note that you are not prompting the users for two vertices that could fail, you will need to determine whether the failure of *any pair* of vertices would cause the graph to become disconnected.
 	f. Quit the program. 
+=======
+1. You must internally represent the graph as an adjacency list.
+1. After loading the graph from the specified file, your program should present the user with a menu with the following options:
+	1. Find the __lowest latency path__ between any two points, and give the bandwidth available along that path.
+		1.  First, your program should prompt the user for the two vertices that they wish to find the lowest latency path between.
+		1.  Then, your program should output the edges that comprise this lowest latency path in order from the first user-specified vertex to the second.
+		1.  You must find the path between these vertices that will require the least amount of time for a single data packet to travel.  For this project, we will simply compute the time required to travel along a path through the graph as the sum of the times required to travel each edge, where the time to travel each edge is computed as the product of speed at which data can be send along a connection of that type and the length of the cable represented by that edge.
+			* A single data packet can be sent along a copper cable at a speed of 230000000 meters per second.
+			* A single data packet can be sent along a fiber optic cable at a speed of 200000000 meters per second.
+		1.  Your program should also output the bandwidth that is available along the resulting path (minimum bandwidth of all edges in the path).
+	1. Determine whether or not the graph is __copper-only connected__, or whether it is connected considering only copper links (i.e., ignoring fiber optic cables).
+	1. Find the __maximum amount of data__ that can be transmitted from one vertex to another.
+		1. First, your program should prompt the user for the two vertices that they wish to find the max bandwidth.
+		1. Then, your program should output the value of the maximum amount of data (bandwidth) that can be transmitted from the first to second user specified vertices.
+	1. Find the __lowest average latency spanning tree__ for the graph (i.e., a spanning tree with the lowest average latency per edge).
+	1. Determine whether or not the graph would remain connected if __any two vertices in the graph were to fail__.
+		1. Note that you are not prompting the users for two vertices that could fail, you will need to determine whether the failure of *any pair* of vertices would cause the graph to become disconnected.
+	1. Quit the program. 
+>>>>>>> 92ca5352f3c6a1658165904d03be581912012faa
 
 ## Submission Guidelines:
 * **DO NOT SUBMIT** any IDE package files.
@@ -47,7 +67,11 @@ Your program should operate entirely via a console interface menu (no GUI).
 
 ## Additional Notes/Hints:
 * Though code for the algorithms used in the assignment has been provided by the authors of your text book, note that use of this code will require extensive adaptations to account for the needs of this project.
+<<<<<<< HEAD
 * The assumed calculation of network latency used here is a drastic simplification for this project.  Interested students are encouraged to investigate a more detailed study of computer networks independently (recommended reading: Computer Networks: A Systems Approach by Peterson and Davie).
+=======
+* The assumed calculation of network latency used here is a drastic simplification for this project.  Interested students are encouraged to investigate a more detailed study of computer networks independently (recommended reading:  _Computer Networks: A Systems Approach_ by Peterson and Davie).
+>>>>>>> 92ca5352f3c6a1658165904d03be581912012faa
 
 ## Grading Rubric
 * Menu interface is user-friendly:  5
