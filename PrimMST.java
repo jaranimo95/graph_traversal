@@ -73,6 +73,9 @@ public class PrimMST {
     private boolean[] marked;     // marked[v] = true if v on tree, false otherwise
     private IndexMinPQ<Double> pq;
 
+    private final double copperSpeed = 230000000;
+    private final double opticalSpeed = 200000000;
+
     /**
      * Compute a minimum spanning tree (or forest) of an edge-weighted graph.
      * @param G the edge-weighted graph
@@ -105,11 +108,20 @@ public class PrimMST {
     // scan vertex v
     private void scan(EdgeWeightedGraph G, int v) {
         marked[v] = true;
+        double speed = 1;
+        double latency;
+
         for (Edge e : G.adj(v)) {
+
+                 if (e.getType().compareTo("copper")  == 0) speed = copperSpeed;
+            else if (e.getType().compareTo("optical") == 0) speed = opticalSpeed;
+
+            latency = e.getLength() / speed;
+
             int w = e.other(v);
-            if (marked[w]) continue;         // v-w is obsolete edge
-            if (e.weight() < distTo[w]) {
-                distTo[w] = e.weight();
+            if (marked[w]) continue;         // v-w is obsolete edge (will probably have to be if(marked[w] || marked[v]) or something like that)
+            if (latency < distTo[w]) {
+                distTo[w] = latency;
                 edgeTo[w] = e;
                 if (pq.contains(w)) pq.decreaseKey(w, distTo[w]);
                 else                pq.insert(w, distTo[w]);
@@ -139,8 +151,14 @@ public class PrimMST {
      */
     public double weight() {
         double weight = 0.0;
-        for (Edge e : edges())
-            weight += e.weight();
+        double speed = 1;
+
+        for (Edge e : edges()){
+                 if (e.getType().compareTo("copper")  == 0) speed = copperSpeed;
+            else if (e.getType().compareTo("optical") == 0) speed = opticalSpeed;
+            weight += e.getLength() / speed;
+        }
+
         return weight;
     }
 
@@ -150,8 +168,14 @@ public class PrimMST {
 
         // check weight
         double totalWeight = 0.0;
+        double speed = 1;
+        double latency, eLatency, fLatency;
+
         for (Edge e : edges()) {
-            totalWeight += e.weight();
+                 if (e.getType().compareTo("copper")  == 0) speed = copperSpeed;
+            else if (e.getType().compareTo("optical") == 0) speed = opticalSpeed;
+            latency = e.getLength() / speed;            
+            totalWeight += latency;
         }
         if (Math.abs(totalWeight - weight()) > FLOATING_POINT_EPSILON) {
             System.err.printf("Weight of edges does not equal weight(): %f vs. %f\n", totalWeight, weight());
@@ -192,7 +216,16 @@ public class PrimMST {
             for (Edge f : G.edges()) {
                 int x = f.either(), y = f.other(x);
                 if (!uf.connected(x, y)) {
-                    if (f.weight() < e.weight()) {
+                    
+                         if (e.getType().compareTo("copper")  == 0) speed = copperSpeed;
+                    else if (e.getType().compareTo("optical") == 0) speed = opticalSpeed;
+                    eLatency = e.getLength() / speed;
+
+                         if (f.getType().compareTo("copper")  == 0) speed = copperSpeed;
+                    else if (f.getType().compareTo("optical") == 0) speed = opticalSpeed;
+                    fLatency = f.getLength() / speed;
+
+                    if (fLatency < eLatency) {
                         System.err.println("Edge " + f + " violates cut optimality conditions");
                         return false;
                     }
@@ -204,11 +237,11 @@ public class PrimMST {
         return true;
     }
 
-    /**
+    /*
      * Unit tests the {@code PrimMST} data type.
      *
      * @param args the command-line arguments
-     */
+     *
     public static void main(String[] args) {
         In in = new In(args[0]);
         EdgeWeightedGraph G = new EdgeWeightedGraph(in);
@@ -217,7 +250,7 @@ public class PrimMST {
             StdOut.println(e);
         }
         StdOut.printf("%.5f\n", mst.weight());
-    }
+    }*/
 
 
 }

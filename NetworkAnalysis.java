@@ -55,11 +55,10 @@ public class NetworkAnalysis {
 				 if (choice == 1) lowestLatencyPath(g);
 			else if (choice == 2) copperOnlyConnection(g);
 			else if (choice == 3) maxFlow(g);
-			/*else if (choice == 4) // lowestAvgLatencyMST();
-			else if (choice == 5) // articulationPoints();*/
+			else if (choice == 4) lowestAvgLatencyMST(g);
+			//else if (choice == 5) // articulationPoints();
 			else if (choice == 6) break;
 		}
-		//reader.close();
 	}
 
 	// latency = length / bandwidth
@@ -95,7 +94,7 @@ public class NetworkAnalysis {
 
         // Fix this
         Arrays.sort(bandwidths);
-        System.out.println("Minimum Bandwidth: "+bandwidths[0]);
+        System.out.println("Minimum Bandwidth: "+bandwidths[0]+"\n");
     }
 
 	private static void copperOnlyConnection(EdgeWeightedGraph g) {
@@ -175,8 +174,15 @@ public class NetworkAnalysis {
 	}
 
 	private static void lowestAvgLatencyMST(EdgeWeightedGraph g) {
-		
+		System.out.println("\nLowest Average Latency ST:");
+		PrimMST mst = new PrimMST(g);
+		for (Edge e : mst.edges()) {
+            StdOut.println(e);
+        }
+        StdOut.printf("%.5f\n\n", mst.weight());
 	}
 
-	//private static void articulationPoints(EdgeWeightedGraph g) {}
+	private static void articulationPoints(EdgeWeightedGraph g) {
+		
+	}
 }
