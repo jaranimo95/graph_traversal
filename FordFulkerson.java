@@ -41,7 +41,7 @@ public class FordFulkerson {
 
     private final int V;          // number of vertices
     private boolean[] marked;     // marked[v] = true iff s->v path in residual graph
-    private FlowEdge[] edgeTo;    // edgeTo[v] = last edge on shortest residual s->v path
+    private FlowEdge[] edgeTo;    // edgeTo[v] = last edge on shortest residual s->v path 
     private double value;         // current value of max flow
   
     /**

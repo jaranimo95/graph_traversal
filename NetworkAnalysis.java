@@ -95,7 +95,7 @@ public class NetworkAnalysis {
         // Fix this
         Arrays.sort(bandwidths);
         System.out.println("Minimum Bandwidth: "+bandwidths[0]);
-	
+    }
 
 	private static void copperOnlyConnection(EdgeWeightedGraph g) {
 		
@@ -132,6 +132,8 @@ public class NetworkAnalysis {
 		for(Edge e : edges) 
 			f.addEdge( new FlowEdge(e.either(),e.other(e.either()),e.getBandwidth()) );
         
+		Scanner reader = new Scanner(System.in);
+
         System.out.print("Please enter the starting vertex: ");
 		int v = reader.nextInt();
 		if (v < 0 || v >= f.V())
@@ -142,7 +144,7 @@ public class NetworkAnalysis {
 			throw new IllegalArgumentException("vertex " + w + " is not between 0 and " + (f.V()-1));
 
 		FordFulkerson maxflow = new FordFulkerson(f, v, w);
-        StdOut.println("Max flow from " + v + " to " + w);
+        StdOut.println("\nMax flow from " + v + " to " + w);
         for (int j = 0; j < f.V(); j++) {
             for (FlowEdge e : f.adj(j)) {
                 if ((j == e.from()) && e.flow() > 0)
@@ -157,7 +159,7 @@ public class NetworkAnalysis {
         }
         StdOut.println();
 
-        StdOut.println("Max flow value = " +  maxflow.value());
+        StdOut.println("Max flow value = " +  maxflow.value()+"\n");
 
         /*MaxDijkstraSP sp = new MaxDijkstraSP(g, v);
 
@@ -171,7 +173,9 @@ public class NetworkAnalysis {
         else StdOut.printf("%d to %d         no path\n", v, w);*/
 	}
 
-	private static void lowestAvgLatencyMST() {
+	private static void lowestAvgLatencyMST(EdgeWeightedGraph g) {
 		
 	}
+
+	//private static void articulationPoints(EdgeWeightedGraph g) {}
 }
