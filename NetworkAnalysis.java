@@ -1,7 +1,7 @@
 // Just about all the methods other than main are identical to the unit tests of the classes they utilize.
 // Support for unit testing was kept intact within the original files themselves, so if you'd like to test
 // 	a particular feature, you can compile/run them directly without having to navigate through the UI in this one.
-
+import dependencies.*;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -63,6 +63,7 @@ public class NetworkAnalysis {
 	}
 
 	// latency = length / bandwidth
+	// PROBLEM: won't find path if v > w, probably only checking adj[v] instead of adj[v] and adj[w]
 	private static void lowestLatencyPath(EdgeWeightedGraph g) throws IllegalArgumentException {
 		
 		Scanner reader = new Scanner(System.in);
@@ -86,7 +87,7 @@ public class NetworkAnalysis {
                 StdOut.printf("\n%d to %d (%.2f)  ", v, w, dsp.distTo(w));
                 for (Edge e : dsp.pathTo(w)) {
                     bandwidths[i] = e.getBandwidth();
-                    StdOut.print(e + "   " + bandwidths[i] + " | ");
+                    StdOut.print(e + "   ");
                 }
                 StdOut.println();
         }

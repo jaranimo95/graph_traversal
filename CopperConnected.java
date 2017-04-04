@@ -57,7 +57,7 @@
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
-
+import dependencies.*;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;

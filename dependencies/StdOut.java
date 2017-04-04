@@ -1,3 +1,6 @@
+
+package dependencies;
+
 /******************************************************************************
  *  Compilation:  javac StdOut.java
  *  Execution:    java StdOut

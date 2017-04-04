@@ -1,3 +1,4 @@
+package dependencies;
 /******************************************************************************
  *  Compilation:  javac UF.java
  *  Execution:    java UF < input.txt

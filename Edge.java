@@ -21,6 +21,7 @@
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
+import dependencies.*;
 public class Edge implements Comparable<Edge> { 
 
     private final int v;

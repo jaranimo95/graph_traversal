@@ -1,3 +1,5 @@
+package dependencies;
+
 /******************************************************************************
  *  Compilation:  javac StdRandom.java
  *  Execution:    java StdRandom

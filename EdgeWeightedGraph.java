@@ -1,4 +1,3 @@
-
 /******************************************************************************
  *  Compilation:  javac EdgeWeightedGraph.java
  *  Execution:    java EdgeWeightedGraph filename.txt
@@ -48,6 +47,7 @@
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
+import dependencies.*;
 public class EdgeWeightedGraph {
     private static final String NEWLINE = System.getProperty("line.separator");
 

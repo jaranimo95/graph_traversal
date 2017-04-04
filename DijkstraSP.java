@@ -14,6 +14,7 @@
  *  @author Kevin Wayne
  *  @editor Christian Jarani
  */
+import dependencies.*;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;

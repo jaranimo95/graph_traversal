@@ -63,6 +63,8 @@
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
+import dependencies.*;
+
 public class PrimMST {
     private static final double FLOATING_POINT_EPSILON = 1E-12;
 

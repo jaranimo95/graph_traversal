@@ -1,3 +1,4 @@
+package dependencies;
 /******************************************************************************
  *  Compilation:  javac Queue.java
  *  Execution:    java Queue < input.txt

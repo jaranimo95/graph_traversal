@@ -1,3 +1,4 @@
+package dependencies;
 /******************************************************************************
  *  Compilation:  javac FlowNetwork.java
  *  Execution:    java FlowNetwork V E

@@ -1,3 +1,4 @@
+package dependencies;
 /******************************************************************************
  *  Compilation:  javac FlowEdge.java
  *  Execution:    java FlowEdge

@@ -1,3 +1,4 @@
+package dependencies;
 /******************************************************************************
  *  Compilation:  javac IndexMinPQ.java
  *  Execution:    java IndexMinPQ
