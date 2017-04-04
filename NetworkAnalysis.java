@@ -1,3 +1,7 @@
+// Just about all the methods other than main are identical to the unit tests of the classes they utilize.
+// Support for unit testing was kept intact within the original files themselves, so if you'd like to test
+// 	a particular feature, you can compile/run them directly without having to navigate through the UI in this one.
+
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,25 +13,26 @@ public class NetworkAnalysis {
 
 		Scanner reader = new Scanner(new File(args[0]));
 		
-		System.out.println("---Network Info---");
+		//System.out.println("---Network Info---");
 		EdgeWeightedGraph g = new EdgeWeightedGraph(reader.nextInt()); // Set scanner to read in info from file
-		System.out.println("# of Vertices: "+g.V()+"\n");
+		//System.out.println("# of Vertices: "+g.V()+"\n");
 		int v,w;
 		String type;
 		int bandwidth;
-		int length;
+		double length;
 
 		while(reader.hasNextLine()) {    // Reads in all data in from file, abiding by the predetermined format
-				   v = reader.nextInt();
-				   if (v < 0 || v >= g.V())
-				   	throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (g.V()-1));
-				   w = reader.nextInt();
-				   if (w < 0 || w >= g.V())
-				   	throw new IllegalArgumentException("vertex " + w + " is not between 0 and " + (g.V()-1));
+			v = reader.nextInt();
+			if (v < 0 || v >= g.V())
+				throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (g.V()-1));
+			w = reader.nextInt();
+			if (w < 0 || w >= g.V())
+				throw new IllegalArgumentException("vertex " + w + " is not between 0 and " + (g.V()-1));
+				
 				type = reader.next();
 		   bandwidth = reader.nextInt();
-		      length = reader.nextInt();
-		    System.out.println("V: "+v+"\nW: "+w+"\nEdge Type: "+type+"\nBandwidth: "+bandwidth+"\nLength: "+length+"\n");
+		      length = reader.nextDouble();
+		    //System.out.println("V: "+v+"\nW: "+w+"\nEdge Type: "+type+"\nBandwidth: "+bandwidth+"\nLength: "+length+"\n");
 		    g.addEdge(new Edge(v, w, type, bandwidth, length));
 		}
 
@@ -36,7 +41,7 @@ public class NetworkAnalysis {
 		int choice;
 		while(true) {  // Program Loop
 			System.out.println("What would you like to do?");
-			System.out.println("\t1. Find Lowest Latency Path\n\t2. Determine Copper-Only Connection\n\t3. Find Max Bandwidth Path\n\t4. Find Lowest Avg. Latency MST\n\t5. Determine Articulation Points\n\t6. Quit\n");
+			System.out.println("\t1. Find Lowest Latency Path\n\t2. Determine Copper-Only Connection\n\t3. Find Max Bandwidth Path\n\t4. Find Lowest Avg. Latency ST\n\t5. Determine Articulation Points\n\t6. Quit\n");
 			while (true) { // Ensures valid input
 				System.out.print("Select a number to choose an option: ");
 				choice = reader.nextInt();
@@ -49,8 +54,8 @@ public class NetworkAnalysis {
 			}    
 				 if (choice == 1) lowestLatencyPath(g);
 			else if (choice == 2) copperOnlyConnection(g);
-			/*else if (choice == 3) // maxBandwidthPath();
-			else if (choice == 4) // lowestAvgLatencyMST();
+			else if (choice == 3) maxBandwidthPath();
+			/*else if (choice == 4) // lowestAvgLatencyMST();
 			else if (choice == 5) // articulationPoints();*/
 			else if (choice == 6) break;
 		}
@@ -124,7 +129,7 @@ public class NetworkAnalysis {
 
 		Scanner reader = new Scanner(new File(args[0]));
         
-       System.out.print("Please enter the starting vertex: ");
+        System.out.print("Please enter the starting vertex: ");
 		v = reader.nextInt();
 		if (v < 0 || v >= g.V())
 			throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (g.V()-1));

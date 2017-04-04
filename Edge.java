@@ -27,7 +27,7 @@ public class Edge implements Comparable<Edge> {
     private final int w;
     private final String type;
     private final int bandwidth;
-    private final int length;
+    private final double length;
 
     /**
      * Initializes an edge between vertices {@code v} and {@code w} of
@@ -40,7 +40,7 @@ public class Edge implements Comparable<Edge> {
      *         is a negative integer
      * @throws IllegalArgumentException if {@code bandwidth} is {@code NaN}
      */
-    public Edge(int v, int w, String type, int bandwidth, int length) {
+    public Edge(int v, int w, String type, int bandwidth, double length) {
         if (v < 0) throw new IllegalArgumentException("vertex index must be a nonnegative integer");
         if (w < 0) throw new IllegalArgumentException("vertex index must be a nonnegative integer");
         if (type.compareTo("copper") != 0 && type.compareTo("optical") != 0)
@@ -65,7 +65,7 @@ public class Edge implements Comparable<Edge> {
         return bandwidth;
     }
 
-    public int getLength() {
+    public double getLength() {
         return length;
     }
 
@@ -115,7 +115,7 @@ public class Edge implements Comparable<Edge> {
      * @return a string representation of this edge
      */
     public String toString() {
-        return String.format("%d-%d %s %d %d", v, w, type, bandwidth, length);
+        return String.format("%d-%d %s %d %.2f", v, w, type, bandwidth, length);
     }
 
     /**

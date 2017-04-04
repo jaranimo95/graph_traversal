@@ -6,48 +6,13 @@
  *                http://algs4.cs.princeton.edu/44sp/mediumEWD.txt
  *                http://algs4.cs.princeton.edu/44sp/largeEWD.txt
  *
- *  Dijkstra's algorithm. Computes the shortest path tree.
- *  Assumes all weights are nonnegative.
- *
- *  % java DijkstraSP tinyEWD.txt 0
- *  0 to 0 (0.00)  
- *  0 to 1 (1.05)  0->4  0.38   4->5  0.35   5->1  0.32   
- *  0 to 2 (0.26)  0->2  0.26   
- *  0 to 3 (0.99)  0->2  0.26   2->7  0.34   7->3  0.39   
- *  0 to 4 (0.38)  0->4  0.38   
- *  0 to 5 (0.73)  0->4  0.38   4->5  0.35   
- *  0 to 6 (1.51)  0->2  0.26   2->7  0.34   7->3  0.39   3->6  0.52   
- *  0 to 7 (0.60)  0->2  0.26   2->7  0.34   
- *
- *  % java DijkstraSP mediumEWD.txt 0
- *  0 to 0 (0.00)  
- *  0 to 1 (0.71)  0->44  0.06   44->93  0.07   ...  107->1  0.07   
- *  0 to 2 (0.65)  0->44  0.06   44->231  0.10  ...  42->2  0.11   
- *  0 to 3 (0.46)  0->97  0.08   97->248  0.09  ...  45->3  0.12   
- *  0 to 4 (0.42)  0->44  0.06   44->93  0.07   ...  77->4  0.11   
- *  ...
- *
  ******************************************************************************/
 
 
 /**
- *  The {@code DijkstraSP} class represents a data type for solving the
- *  single-source shortest paths problem in edge-weighted digraphs
- *  where the edge weights are nonnegative.
- *  <p>
- *  This implementation uses Dijkstra's algorithm with a binary heap.
- *  The constructor takes time proportional to <em>E</em> log <em>V</em>,
- *  where <em>V</em> is the number of vertices and <em>E</em> is the number of edges.
- *  Afterwards, the {@code distTo()} and {@code hasPathTo()} methods take
- *  constant time and the {@code pathTo()} method takes time proportional to the
- *  number of edges in the shortest path returned.
- *  <p>
- *  For additional documentation,    
- *  see <a href="http://algs4.cs.princeton.edu/44sp">Section 4.4</a> of    
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne. 
- *
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
+ *  @editor Christian Jarani
  */
 import java.util.Scanner;
 import java.io.File;
@@ -57,6 +22,9 @@ public class DijkstraSP {
     private double[] distTo;          // distTo[v] = distance  of shortest s->v path
     private Edge[] edgeTo;            // edgeTo[v] = last edge on shortest s->v path
     private IndexMinPQ<Double> pq;    // priority queue of vertices
+
+    private final double copperSpeed = 230000000;
+    private final double opticalSpeed = 200000000;
 
     /**
      * Computes a shortest-paths tree from the source vertex {@code s} to every other
@@ -98,8 +66,15 @@ public class DijkstraSP {
     // relax edge e and update pq if changed
     private void relax(Edge e) {
         int v = e.either(), w = e.other(v);
-        if (distTo[w] > distTo[v] + (e.getLength() / e.getBandwidth())) {
-            distTo[w] = distTo[v] + (e.getLength() / e.getBandwidth());
+        double speed = 0;
+
+             if (e.getType().compareTo("copper")  == 0) speed = copperSpeed;
+        else if (e.getType().compareTo("optical") == 0) speed = opticalSpeed;
+
+        double latency = e.getLength() / speed;
+
+        if (distTo[w] > distTo[v] + latency) {
+            distTo[w] = distTo[v] + latency;
             edgeTo[w] = e;
             if (pq.contains(w)) pq.decreaseKey(w, distTo[w]);
             else                pq.insert(w, distTo[w]);
@@ -154,10 +129,19 @@ public class DijkstraSP {
     // (i) for all edges e:            distTo[e.to()] <= distTo[e.from()] + e.weight()
     // (ii) for all edge e on the SPT: distTo[e.to()] == distTo[e.from()] + e.weight()
     private boolean check(EdgeWeightedGraph G, int s) {
+        
+        double speed = 1.00;
+        double latency;
 
         // check that edge weights are nonnegative
         for (Edge e : G.edges()) {
-            if ((e.getLength() / e.getBandwidth()) < 0) {
+
+                 if (e.getType().compareTo("copper")  == 0) speed = copperSpeed;
+            else if (e.getType().compareTo("optical") == 0) speed = opticalSpeed;
+
+            latency = e.getLength() / speed;
+            
+            if (latency < 0) {
                 System.err.println("negative edge weight detected");
                 return false;
             }
@@ -179,8 +163,13 @@ public class DijkstraSP {
         // check that all edges e = v->w satisfy distTo[w] <= distTo[v] + e.weight()
         for (int v = 0; v < G.V(); v++) {
             for (Edge e : G.adj(v)) {
+                     
+                     if (e.getType().compareTo("copper")  == 0) speed = copperSpeed;
+                else if (e.getType().compareTo("optical") == 0) speed = opticalSpeed;
+                latency = e.getLength() / speed;
+                
                 int w = e.other(v);
-                if (distTo[v] + (e.getLength() / e.getBandwidth()) < distTo[w]) {
+                if (distTo[v] + latency < distTo[w]) {
                     System.err.println("edge " + e + " not relaxed");
                     return false;
                 }
@@ -192,8 +181,13 @@ public class DijkstraSP {
             if (edgeTo[w] == null) continue;
             Edge e = edgeTo[w];
             int v = e.either();
+
+                 if (e.getType().compareTo("copper")  == 0) speed = copperSpeed;
+            else if (e.getType().compareTo("optical") == 0) speed = opticalSpeed;
+            latency = e.getLength() / speed;
+
             if (w != e.other(v)) return false;
-            if (distTo[v] + (e.getLength() / e.getBandwidth()) != distTo[w]) {
+            if (distTo[v] + latency != distTo[w]) {
                 System.err.println("edge " + e + " on shortest path not tight");
                 return false;
             }
@@ -216,29 +210,27 @@ public class DijkstraSP {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner reader = new Scanner(new File(args[0]));
         
-        System.out.println("---Network Info---");
         EdgeWeightedGraph g = new EdgeWeightedGraph(reader.nextInt()); // Set scanner to read in info from file
-        System.out.println("# of Vertices: "+g.V()+"\n");
         int v,w;
         String type;
         int bandwidth;
-        int length;
+        double length;
 
         while(reader.hasNextLine()) {    // Reads in all data in from file, abiding by the predetermined format
-                   v = reader.nextInt();
-                   if (v < 0 || v >= g.V())
-                    throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (g.V()-1));
-                   w = reader.nextInt();
-                   if (w < 0 || w >= g.V())
-                    throw new IllegalArgumentException("vertex " + w + " is not between 0 and " + (g.V()-1));
+            v = reader.nextInt();
+            if (v < 0 || v >= g.V())
+                throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (g.V()-1));
+            w = reader.nextInt();
+            if (w < 0 || w >= g.V())
+                throw new IllegalArgumentException("vertex " + w + " is not between 0 and " + (g.V()-1));
                 type = reader.next();
            bandwidth = reader.nextInt();
-              length = reader.nextInt();
+              length = reader.nextDouble();
             System.out.println("V: "+v+"\nW: "+w+"\nEdge Type: "+type+"\nBandwidth: "+bandwidth+"\nLength: "+length+"\n");
             g.addEdge(new Edge(v, w, type, bandwidth, length));
         }
-        int s = 0;
-        int d = 6;
+        int s = 0;      // Instead of inputting vertices from the command line, just edit them here. This is the source vertex
+        int d = 3;      // Same with this one. This is the destination vertex
 
         // compute shortest paths
         DijkstraSP sp = new DijkstraSP(g, s);
