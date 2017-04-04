@@ -48,11 +48,11 @@ Your program should operate entirely via a console interface menu (no GUI).
 			* A single data packet can be sent along a fiber optic cable at a speed of 200000000 meters per second.
 		1.  Your program should also output the bandwidth that is available along the resulting path (minimum bandwidth of all edges in the path).
 	1. Determine whether or not the graph is __copper-only connected__, or whether it is connected considering only copper links (i.e., ignoring fiber optic cables). (CC.java)
-	1. Find the __maximum amount of data__ that can be transmitted from one vertex to another. (Ford-Fulkerson)
+	1. Find the __maximum amount of data__ that can be transmitted from one vertex to another. (Adapted Dijkstra's)
 		1. First, your program should prompt the user for the two vertices that they wish to find the max bandwidth.
 		1. Then, your program should output the value of the maximum amount of data (bandwidth) that can be transmitted from the first to second user specified vertices.
 	1. Find the __lowest average latency spanning tree__ for the graph (i.e., a spanning tree with the lowest average latency per edge). (MST)
-	1. Determine whether or not the graph would remain connected if __any two vertices in the graph were to fail__.
+	1. Determine whether or not the graph would remain connected if __any two vertices in the graph were to fail__. (CC)
 		1. Note that you are not prompting the users for two vertices that could fail, you will need to determine whether the failure of *any pair* of vertices would cause the graph to become disconnected.
 	1. Quit the program. 
 

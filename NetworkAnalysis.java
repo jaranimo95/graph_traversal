@@ -56,7 +56,7 @@ public class NetworkAnalysis {
 			else if (choice == 2) copperOnlyConnection(g);
 			else if (choice == 3) maxFlow(g);
 			else if (choice == 4) lowestAvgLatencyMST(g);
-			//else if (choice == 5) // articulationPoints();
+			else if (choice == 5) articulationPoints(g);
 			else if (choice == 6) break;
 		}
 	}
@@ -124,7 +124,7 @@ public class NetworkAnalysis {
             StdOut.println();
         }
 	}
-
+	// PROBLEM: won't find path if v > w, probably only checking adj[v] instead of adj[v] and adj[w]
 	private static void maxFlow(EdgeWeightedGraph g) {
 
 		FlowNetwork f = new FlowNetwork(g.V());
@@ -157,20 +157,7 @@ public class NetworkAnalysis {
         for (int i = 0; i < f.V(); i++) {
             if (maxflow.inCut(i)) StdOut.print(i + " ");
         }
-        StdOut.println();
-
-        StdOut.println("Max flow value = " +  maxflow.value()+"\n");
-
-        /*MaxDijkstraSP sp = new MaxDijkstraSP(g, v);
-
-        if (sp.hasPathTo(w)) {
-                StdOut.printf("%d to %d (%.2f)  ", v, w, sp.distTo(w));
-                for (Edge e : sp.pathTo(w)) {
-                    StdOut.print(e + "   ");
-                }
-                StdOut.println();
-        }
-        else StdOut.printf("%d to %d         no path\n", v, w);*/
+        StdOut.println("\nMax flow value = " +  maxflow.value()+"\n");
 	}
 
 	private static void lowestAvgLatencyMST(EdgeWeightedGraph g) {
@@ -184,5 +171,46 @@ public class NetworkAnalysis {
 
 	private static void articulationPoints(EdgeWeightedGraph g) {
 		
+		boolean flag = false; // Used so we don't check vertices twice since our edges are duplex (01 and 10, 21 and 12, etc.)
+		EdgeWeightedGraph u;
+		CC cc;
+		int[] vertsToRemove = new int[2];
+
+		for(int i = 0; i < g.V() - 1; i++) {	   // For all but the last vertex..
+			u = new EdgeWeightedGraph(g.V());	   // Create a new graph. This will represent our original graph without the vertices that we wish to remove
+			vertsToRemove[0] = i;				   // Signal to remove vertex i from the graph,
+			for(int j = 1; j < g.V(); j++) {	   // And for all but the first vertex...
+				vertsToRemove[1] = j;		   	   // Signal to remove vertex j from the graph.
+				for(Edge e : g.edges()) {	   	   // Now iterate over all the edges of the original graph:
+				   								   // If an edge connects to one of the vertices we want to remove, we don't add that edge to the graph, thus, removing the vertex from consideration.
+					if(vertsToRemove[0] == e.either() || vertsToRemove[1] == e.either() || vertsToRemove[0] == e.other(e.either()) || vertsToRemove[1] == e.other(e.either())) 
+						continue;
+					else u.addEdge(e);
+				}
+				cc = new CC(u);
+				// number of connected components
+		        int m = cc.count();
+		        if(m > 1) System.out.println("Graph is not connected after vertices "+vertsToRemove[0]+" and "+vertsToRemove[1]+" were removed:");
+		        else System.out.println("Graph remains connected after all vertex pairs were removed:");
+		        StdOut.println(m + " components");
+
+		        // compute list of vertices in each connected component
+		        Queue<Integer>[] components = (Queue<Integer>[]) new Queue[m];
+		        for (int i = 0; i < m; i++) {
+		            components[i] = new Queue<Integer>();
+		        }
+		        for (int j = 0; j < g.V(); j++) {
+		            components[cc.id(j)].enqueue(j);
+		        }
+
+		        // print results
+		        for (int i = 0; i < m; i++) {
+		            for (int j : components[i]) {
+		                StdOut.print(j + " ");
+		            }
+		            StdOut.println();
+		        }
+			}
+		}
 	}
 }
