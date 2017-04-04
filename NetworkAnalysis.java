@@ -54,7 +54,7 @@ public class NetworkAnalysis {
 			}    
 				 if (choice == 1) lowestLatencyPath(g);
 			else if (choice == 2) copperOnlyConnection(g);
-			else if (choice == 3) maxBandwidthPath();
+			else if (choice == 3) maxFlow(g);
 			/*else if (choice == 4) // lowestAvgLatencyMST();
 			else if (choice == 5) // articulationPoints();*/
 			else if (choice == 6) break;
@@ -95,7 +95,7 @@ public class NetworkAnalysis {
         // Fix this
         Arrays.sort(bandwidths);
         System.out.println("Minimum Bandwidth: "+bandwidths[0]);
-	}
+	
 
 	private static void copperOnlyConnection(EdgeWeightedGraph g) {
 		
@@ -125,20 +125,41 @@ public class NetworkAnalysis {
         }
 	}
 
-	private static void maxBandwidthPath(EdgeWeightedGraph g) {
+	private static void maxFlow(EdgeWeightedGraph g) {
 
-		Scanner reader = new Scanner(new File(args[0]));
+		FlowNetwork f = new FlowNetwork(g.V());
+		Iterable<Edge> edges = g.edges();
+		for(Edge e : edges) 
+			f.addEdge( new FlowEdge(e.either(),e.other(e.either()),e.getBandwidth()) );
         
         System.out.print("Please enter the starting vertex: ");
-		v = reader.nextInt();
-		if (v < 0 || v >= g.V())
-			throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (g.V()-1));
+		int v = reader.nextInt();
+		if (v < 0 || v >= f.V())
+			throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (f.V()-1));
 		System.out.print("Please enter the ending vertex: ");
-		w = reader.nextInt();
-		if (w < 0 || w >= g.V())
-			throw new IllegalArgumentException("vertex " + w + " is not between 0 and " + (g.V()-1));
+		int w = reader.nextInt();
+		if (w < 0 || w >= f.V())
+			throw new IllegalArgumentException("vertex " + w + " is not between 0 and " + (f.V()-1));
 
-        MaxDijkstraSP sp = new MaxDijkstraSP(g, v);
+		FordFulkerson maxflow = new FordFulkerson(f, v, w);
+        StdOut.println("Max flow from " + v + " to " + w);
+        for (int j = 0; j < f.V(); j++) {
+            for (FlowEdge e : f.adj(j)) {
+                if ((j == e.from()) && e.flow() > 0)
+                    StdOut.println("   " + e);
+            }
+        }
+
+        // print min-cut
+        StdOut.print("Min cut: ");
+        for (int i = 0; i < f.V(); i++) {
+            if (maxflow.inCut(i)) StdOut.print(i + " ");
+        }
+        StdOut.println();
+
+        StdOut.println("Max flow value = " +  maxflow.value());
+
+        /*MaxDijkstraSP sp = new MaxDijkstraSP(g, v);
 
         if (sp.hasPathTo(w)) {
                 StdOut.printf("%d to %d (%.2f)  ", v, w, sp.distTo(w));
@@ -147,8 +168,10 @@ public class NetworkAnalysis {
                 }
                 StdOut.println();
         }
-        else StdOut.printf("%d to %d         no path\n", v, w);
+        else StdOut.printf("%d to %d         no path\n", v, w);*/
 	}
 
-	private static void 
+	private static void lowestAvgLatencyMST() {
+		
+	}
 }
