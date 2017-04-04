@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 
 public class NetworkAnalysis {
 	
@@ -60,15 +61,34 @@ public class NetworkAnalysis {
 	private static void lowestLatencyPath(EdgeWeightedGraph g) throws IllegalArgumentException {
 		
 		Scanner reader = new Scanner(System.in);
-		/*int v, w;
+		int v, w;
 
 		System.out.print("Please enter the starting vertex: ");
 		v = reader.nextInt();
-		g.validateVertex(v);
+		if (v < 0 || v >= g.V())
+			throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (g.V()-1));
 		System.out.print("Please enter the ending vertex: ");
 		w = reader.nextInt();
-		g.validateVertex(w);*/
+		if (w < 0 || w >= g.V())
+			throw new IllegalArgumentException("vertex " + w + " is not between 0 and " + (g.V()-1));
+		
+		DijkstraSP dsp = new DijkstraSP(g,v);
+		int[] bandwidths = new int[g.E()];
+		int i = 0;
 
+        // print shortest path
+        if (dsp.hasPathTo(w)) {
+                StdOut.printf("\n%d to %d (%.2f)  ", v, w, dsp.distTo(w));
+                for (Edge e : dsp.pathTo(w)) {
+                    bandwidths[i] = e.getBandwidth();
+                    StdOut.print(e + "   " + bandwidths[i] + " | ");
+                }
+                StdOut.println();
+        }
+        else StdOut.printf("%d to %d         no path\n", v, w);
 
+        // Work on this later
+        Arrays.sort(bandwidths);
+        System.out.println("Minimum Bandwidth: "+bandwidths[0]);
 	}
 }
