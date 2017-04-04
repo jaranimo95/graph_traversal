@@ -48,8 +48,8 @@ public class NetworkAnalysis {
 				}
 			}    
 				 if (choice == 1) lowestLatencyPath(g);
-			/*else if (choice == 2) // copperOnlyConnection();
-			else if (choice == 3) // maxBandwidthPath();
+			else if (choice == 2) copperOnlyConnection(g);
+			/*else if (choice == 3) // maxBandwidthPath();
 			else if (choice == 4) // lowestAvgLatencyMST();
 			else if (choice == 5) // articulationPoints();*/
 			else if (choice == 6) break;
@@ -87,8 +87,39 @@ public class NetworkAnalysis {
         }
         else StdOut.printf("%d to %d         no path\n", v, w);
 
-        // Work on this later
+        // Fix this
         Arrays.sort(bandwidths);
         System.out.println("Minimum Bandwidth: "+bandwidths[0]);
+	}
+
+	private static void copperOnlyConnection(EdgeWeightedGraph g) {
+		CopperConnected cc = new CopperConnected(g);
+
+        // number of connected components
+        int m = cc.count();
+        if(m > 1) System.out.println("Graph is not copper connected:");
+        else System.out.println("Graph is copper connected:");
+        StdOut.println(m + " components");
+
+        // compute list of vertices in each connected component
+        Queue<Integer>[] components = (Queue<Integer>[]) new Queue[m];
+        for (int i = 0; i < m; i++) {
+            components[i] = new Queue<Integer>();
+        }
+        for (int j = 0; j < g.V(); j++) {
+            components[cc.id(j)].enqueue(j);
+        }
+
+        // print results
+        for (int i = 0; i < m; i++) {
+            for (int j : components[i]) {
+                StdOut.print(j + " ");
+            }
+            StdOut.println();
+        }
+	}
+
+	private static void maxBandwidthPath(EdgeWeightedGraph g) {
+
 	}
 }

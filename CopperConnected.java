@@ -57,6 +57,11 @@
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
+
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+
 public class CopperConnected {
     private boolean[] marked;   // marked[v] = has vertex v been marked?
     private int[] id;           // id[v] = id of connected component containing v
@@ -64,28 +69,11 @@ public class CopperConnected {
     private int count;          // number of connected components
 
     /**
-     * Computes the connected components of the undirected graph {@code G}.
-     *
-     * @param G the undirected graph
-     */
-    public CC(Graph G) {
-        marked = new boolean[G.V()];
-        id = new int[G.V()];
-        size = new int[G.V()];
-        for (int v = 0; v < G.V(); v++) {
-            if (!marked[v]) {
-                dfs(G, v);
-                count++;
-            }
-        }
-    }
-
-    /**
      * Computes the connected components of the edge-weighted graph {@code G}.
      *
      * @param G the edge-weighted graph
      */
-    public CC(EdgeWeightedGraph G) {
+    public CopperConnected(EdgeWeightedGraph G) {
         marked = new boolean[G.V()];
         id = new int[G.V()];
         size = new int[G.V()];
@@ -93,18 +81,6 @@ public class CopperConnected {
             if (!marked[v]) {
                 dfs(G, v);
                 count++;
-            }
-        }
-    }
-
-    // depth-first search for a Graph
-    private void dfs(Graph G, int v) {
-        marked[v] = true;
-        id[v] = count;
-        size[count]++;
-        for (int w : G.adj(v)) {
-            if (!marked[w]) {
-                dfs(G, w);
             }
         }
     }
@@ -116,7 +92,7 @@ public class CopperConnected {
         size[count]++;
         for (Edge e : G.adj(v)) {
             int w = e.other(v);
-            if (!marked[w]) {
+            if (!marked[w] && e.getType().compareTo("copper") == 0) {
                 dfs(G, w);
             }
         }
@@ -204,13 +180,37 @@ public class CopperConnected {
      *
      * @param args the command-line arguments
      */
-    public static void main(String[] args) {
-        In in = new In(args[0]);
-        Graph G = new Graph(in);
-        CC cc = new CC(G);
+    public static void main(String[] args) throws FileNotFoundException {
+        Scanner reader = new Scanner(new File(args[0]));
+        
+        System.out.println("---Network Info---");
+        EdgeWeightedGraph g = new EdgeWeightedGraph(reader.nextInt()); // Set scanner to read in info from file
+        System.out.println("# of Vertices: "+g.V()+"\n");
+        int v,w;
+        String type;
+        int bandwidth;
+        int length;
+
+        while(reader.hasNextLine()) {    // Reads in all data in from file, abiding by the predetermined format
+                   v = reader.nextInt();
+                   if (v < 0 || v >= g.V())
+                    throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (g.V()-1));
+                   w = reader.nextInt();
+                   if (w < 0 || w >= g.V())
+                    throw new IllegalArgumentException("vertex " + w + " is not between 0 and " + (g.V()-1));
+                type = reader.next();
+           bandwidth = reader.nextInt();
+              length = reader.nextInt();
+            System.out.println("V: "+v+"\nW: "+w+"\nEdge Type: "+type+"\nBandwidth: "+bandwidth+"\nLength: "+length+"\n");
+            g.addEdge(new Edge(v, w, type, bandwidth, length));
+        }
+
+        CopperConnected cc = new CopperConnected(g);
 
         // number of connected components
         int m = cc.count();
+        if(m > 1) System.out.println("Graph is not copper connected:");
+        else System.out.println("Graph is copper connected:");
         StdOut.println(m + " components");
 
         // compute list of vertices in each connected component
@@ -218,14 +218,14 @@ public class CopperConnected {
         for (int i = 0; i < m; i++) {
             components[i] = new Queue<Integer>();
         }
-        for (int v = 0; v < G.V(); v++) {
-            components[cc.id(v)].enqueue(v);
+        for (int j = 0; j < g.V(); j++) {
+            components[cc.id(j)].enqueue(j);
         }
 
         // print results
         for (int i = 0; i < m; i++) {
-            for (int v : components[i]) {
-                StdOut.print(v + " ");
+            for (int j : components[i]) {
+                StdOut.print(j + " ");
             }
             StdOut.println();
         }

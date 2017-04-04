@@ -37,7 +37,7 @@ Your program should operate entirely via a console interface menu (no GUI).
 	e. Determine whether or not the graph would remain connected if __any two vertices in the graph were to fail__. (Connected Components [CC.java])
 		-  Note that you are not prompting the users for two vertices that could fail, you will need to determine whether the failure of *any pair* of vertices would cause the graph to become disconnected.
 	f. Quit the program.
-=======
+
 1. You must internally represent the graph as an adjacency list.
 1. After loading the graph from the specified file, your program should present the user with a menu with the following options:
 	1. Find the __lowest latency path__ between any two points, and give the bandwidth available along that path.
@@ -55,7 +55,6 @@ Your program should operate entirely via a console interface menu (no GUI).
 	1. Determine whether or not the graph would remain connected if __any two vertices in the graph were to fail__.
 		1. Note that you are not prompting the users for two vertices that could fail, you will need to determine whether the failure of *any pair* of vertices would cause the graph to become disconnected.
 	1. Quit the program. 
->>>>>>> 92ca5352f3c6a1658165904d03be581912012faa
 
 ## Submission Guidelines:
 * **DO NOT SUBMIT** any IDE package files.
@@ -69,9 +68,6 @@ Your program should operate entirely via a console interface menu (no GUI).
 * Though code for the algorithms used in the assignment has been provided by the authors of your text book, note that use of this code will require extensive adaptations to account for the needs of this project.
 <<<<<<< HEAD
 * The assumed calculation of network latency used here is a drastic simplification for this project.  Interested students are encouraged to investigate a more detailed study of computer networks independently (recommended reading: Computer Networks: A Systems Approach by Peterson and Davie).
-=======
-* The assumed calculation of network latency used here is a drastic simplification for this project.  Interested students are encouraged to investigate a more detailed study of computer networks independently (recommended reading:  _Computer Networks: A Systems Approach_ by Peterson and Davie).
->>>>>>> 92ca5352f3c6a1658165904d03be581912012faa
 
 ## Grading Rubric
 * Menu interface is user-friendly:  5
