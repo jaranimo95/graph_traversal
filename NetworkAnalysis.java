@@ -93,6 +93,7 @@ public class NetworkAnalysis {
 	}
 
 	private static void copperOnlyConnection(EdgeWeightedGraph g) {
+		
 		CopperConnected cc = new CopperConnected(g);
 
         // number of connected components
@@ -121,5 +122,28 @@ public class NetworkAnalysis {
 
 	private static void maxBandwidthPath(EdgeWeightedGraph g) {
 
+		Scanner reader = new Scanner(new File(args[0]));
+        
+       System.out.print("Please enter the starting vertex: ");
+		v = reader.nextInt();
+		if (v < 0 || v >= g.V())
+			throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (g.V()-1));
+		System.out.print("Please enter the ending vertex: ");
+		w = reader.nextInt();
+		if (w < 0 || w >= g.V())
+			throw new IllegalArgumentException("vertex " + w + " is not between 0 and " + (g.V()-1));
+
+        MaxDijkstraSP sp = new MaxDijkstraSP(g, v);
+
+        if (sp.hasPathTo(w)) {
+                StdOut.printf("%d to %d (%.2f)  ", v, w, sp.distTo(w));
+                for (Edge e : sp.pathTo(w)) {
+                    StdOut.print(e + "   ");
+                }
+                StdOut.println();
+        }
+        else StdOut.printf("%d to %d         no path\n", v, w);
 	}
+
+	private static void 
 }
