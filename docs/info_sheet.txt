@@ -30,15 +30,17 @@ Handed in date: 4/4/2017
 
 
 
-Source code file name(s): Files that I edited for the project reqs
+Source code file name(s): Files that I edited to meet the project reqs
 
 NetworkAnalysis.java
 EdgeWeightedGraph.java
 Edge.java
 DijkstraSP.java
-MaxDijkstraSP.java (ended up not using but implemented anyways)
+MaxDijkstraSP.java (ended up not using but implemented anyways, located in dependencies package to avoid clutter/confusion)
 CopperConnected.java
+FordFulkerson.java
 PrimMST.java
+CC.java
 
 
 
@@ -56,10 +58,8 @@ Other file name(s) (if relevant):
 
 
 
- Files that the ones I edited depended on (all in dependencies package)
+ Files that those above depend on (all in dependencies package)
 
-FordFulkerson.java
-CC.java
 Bag.java
 FlowEdge.java
 FlowNetwork.java

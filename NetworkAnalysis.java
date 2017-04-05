@@ -78,21 +78,24 @@ public class NetworkAnalysis {
 			throw new IllegalArgumentException("vertex " + w + " is not between 0 and " + (g.V()-1));
 		
 		DijkstraSP dsp = new DijkstraSP(g,v);
-		int[] bandwidths = new int[g.E()];
-		int i = 0;
+		int[] temp = new int[g.E()];
+		int size = 0;
 
         // print shortest path
         if (dsp.hasPathTo(w)) {
                 StdOut.printf("\n%d to %d (%.2f)  ", v, w, dsp.distTo(w));
                 for (Edge e : dsp.pathTo(w)) {
-                    bandwidths[i] = e.getBandwidth();
+                    temp[size++] = e.getBandwidth();
                     StdOut.print(e + "   ");
                 }
                 StdOut.println();
         }
         else StdOut.printf("%d to %d         no path\n", v, w);
 
-        // Fix this
+        int[] bandwidths = new int[size];
+        for(int count = 0; count < size; count++)
+        	bandwidths[count] = temp[count];
+
         Arrays.sort(bandwidths);
         System.out.println("Minimum Bandwidth: "+bandwidths[0]+"\n");
     }
