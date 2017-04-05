@@ -171,32 +171,40 @@ public class NetworkAnalysis {
 
 	private static void articulationPoints(EdgeWeightedGraph g) {
 		
-		boolean flag = false; // Used so we don't check vertices twice since our edges are duplex (01 and 10, 21 and 12, etc.)
+		boolean disconnected = false; // Used to indicate that no vertice pair caused graph to disconnect
+		boolean repeatedPair = false;
 		EdgeWeightedGraph u;
 		CC cc;
 		int[] vertsToRemove = new int[2];
 
-		for(int i = 0; i < g.V() - 1; i++) {	   // For all but the last vertex..
-			u = new EdgeWeightedGraph(g.V());	   // Create a new graph. This will represent our original graph without the vertices that we wish to remove
-			vertsToRemove[0] = i;				   // Signal to remove vertex i from the graph,
-			for(int j = 1; j < g.V(); j++) {	   // And for all but the first vertex...
-				vertsToRemove[1] = j;		   	   // Signal to remove vertex j from the graph.
-				for(Edge e : g.edges()) {	   	   // Now iterate over all the edges of the original graph:
-				   								   // If an edge connects to one of the vertices we want to remove, we don't add that edge to the graph, thus, removing the vertex from consideration.
+		for(int i = 0; i < g.V() - 1; i++) {	    // For all but the last vertex..
+			u = new EdgeWeightedGraph(g.V());	    // Create a new graph. This will represent our original graph without the vertices that we wish to remove
+			vertsToRemove[0] = i;				    // Signal to remove vertex i from the graph,
+			for(int j = 1; j < g.V(); j++) {	    // And for all but the first vertex...
+				if(repeatedPair) {
+					j = i+1;					    // Set j = to one vertex greater than i so we don't repeat vertices
+					repeatedPair = false;
+				}
+				vertsToRemove[1] = j;		   	    // Signal to remove vertex j from the graph.
+				for(Edge e : g.edges()) {	   	    // Now iterate over all the edges of the original graph:
+				   								    // If an edge connects to one of the vertices we want to remove, we don't add that edge to the graph, thus, removing the vertex from consideration.
 					if(vertsToRemove[0] == e.either() || vertsToRemove[1] == e.either() || vertsToRemove[0] == e.other(e.either()) || vertsToRemove[1] == e.other(e.either())) 
 						continue;
 					else u.addEdge(e);
 				}
-				cc = new CC(u);
+				cc = new CC(u);						// Pass new graph through connected component object
 				// number of connected components
-		        int m = cc.count();
-		        if(m > 1) System.out.println("Graph is not connected after vertices "+vertsToRemove[0]+" and "+vertsToRemove[1]+" were removed:");
-		        else System.out.println("Graph remains connected after all vertex pairs were removed:");
-		        StdOut.println(m + " components");
+		        int numOfComponents = cc.count();	// Return the number of components
+		        if(numOfComponents > 1) {			// If more than one component, then graph became disconnected upon removing the vertice pair
+		        	System.out.println("Graph is not connected after vertices "+vertsToRemove[0]+" and "+vertsToRemove[1]+" were removed.");
+		        	disconnected = true;			// Set disconnected flag to true, since a pair exists that disconnects the graph
+		        }
+		        //StdOut.println(numOfComponents + " components");
 
+		        /*
 		        // compute list of vertices in each connected component
-		        Queue<Integer>[] components = (Queue<Integer>[]) new Queue[m];
-		        for (int i = 0; i < m; i++) {
+		        Queue<Integer>[] components = (Queue<Integer>[]) new Queue[numOfComponents];
+		        for (int i = 0; i < numOfComponents; i++) {
 		            components[i] = new Queue<Integer>();
 		        }
 		        for (int j = 0; j < g.V(); j++) {
@@ -204,13 +212,15 @@ public class NetworkAnalysis {
 		        }
 
 		        // print results
-		        for (int i = 0; i < m; i++) {
+		        for (int i = 0; i < numOfComponents; i++) {
 		            for (int j : components[i]) {
 		                StdOut.print(j + " ");
 		            }
 		            StdOut.println();
-		        }
+		        }*/
 			}
+			repeatedPair = true; //
 		}
+		if(!disconnected) System.out.println("Graph remained connected after all vertex pairs were removed.");
 	}
 }

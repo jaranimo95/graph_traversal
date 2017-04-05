@@ -1,24 +1,46 @@
 ========================================
+
 CS/COE 1501 Assignment Information Sheet
+
 ----------------------------------------
 
-You must submit an information sheet with every assignment.  Also be sure
-to submit all materials following the procedures described on the
-submission procedures page.
 
-Name:  
+You must submit an information sheet with every assignment. Also be sure to submit 
+all materials following the procedures described on the
+ submission procedures page.
 
-Lecture section:  
 
-Recitation day and time:  
 
-Assignment #:  
+Name: Christian Jarani
 
-Program due date:  
+Lecture section: MW 9:30 am  
 
-Handed in date:  
 
-Source code file name(s):
+Recitation day and time: Friday 3 pm  
+
+
+Assignment #: 4  
+
+
+
+Program due date: 4/4/2017 
+
+
+Handed in date: 4/4/2017 
+
+
+
+Source code file name(s): Files that I edited for the project reqs
+
+NetworkAnalysis.java
+EdgeWeightedGraph.java
+Edge.java
+DijkstraSP.java
+MaxDijkstraSP.java (ended up not using but implemented anyways)
+CopperConnected.java
+PrimMST.java
+
+
 
 
 
@@ -34,10 +56,33 @@ Other file name(s) (if relevant):
 
 
 
-Does your program run without error?:
+ Files that the ones I edited depended on (all in dependencies package)
 
-If not, what is/are the error(s) and which parts of your program run
+FordFulkerson.java
+CC.java
+Bag.java
+FlowEdge.java
+FlowNetwork.java
+In.java
+IndexMinPQ.java
+IndexMaxPQ.java (used with MaxDijkstraSP.java, so not used either)
+Queue.java
+Stack.java
+StdIn.java
+StdOut.java
+StdRandom.java
+UF.java
+
+Does your program run without error?: No
+
+If not, what is/are the error(s) and which parts of your program run 
 correctly?:
+
+
+  - lowestLatencyPath() will not calculate some of the paths between vertices, especially if source vertex is greater than destination vertex
+  - maxFlow() has the same issue as lowestLatencyPath()
+  - articulationPoints() doesn't work right, but most of the logic is there. Here's to partial credit!
+
 
 
 

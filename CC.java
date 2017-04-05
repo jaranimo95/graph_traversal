@@ -64,11 +64,11 @@ public class CC {
     private int[] size;         // size[id] = number of vertices in given component
     private int count;          // number of connected components
 
-    /**
+    /*
      * Computes the connected components of the undirected graph {@code G}.
      *
      * @param G the undirected graph
-     */
+     *
     public CC(Graph G) {
         marked = new boolean[G.V()];
         id = new int[G.V()];
@@ -79,7 +79,7 @@ public class CC {
                 count++;
             }
         }
-    }
+    } */
 
     /**
      * Computes the connected components of the edge-weighted graph {@code G}.
@@ -97,7 +97,7 @@ public class CC {
             }
         }
     }
-
+    /*
     // depth-first search for a Graph
     private void dfs(Graph G, int v) {
         marked[v] = true;
@@ -108,7 +108,7 @@ public class CC {
                 dfs(G, w);
             }
         }
-    }
+    }*/
 
     // depth-first search for an EdgeWeightedGraph
     private void dfs(EdgeWeightedGraph G, int v) {
@@ -200,11 +200,11 @@ public class CC {
             throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V-1));
     }
 
-    /**
+    /*
      * Unit tests the {@code CC} data type.
      *
      * @param args the command-line arguments
-     */
+     *
     public static void main(String[] args) {
         In in = new In(args[0]);
         Graph G = new Graph(in);
@@ -230,5 +230,5 @@ public class CC {
             }
             StdOut.println();
         }
-    }
+    }*/
 }
