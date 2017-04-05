@@ -188,11 +188,16 @@ public class NetworkAnalysis {
 					j = i+1;					    // Set j = to one vertex greater than i so we don't repeat vertices
 					repeatedPair = false;
 				}
-				vertsToRemove[1] = j;		   	    // Signal to remove vertex j from the graph.
-				for(Edge e : g.edges()) {	   	    // Now iterate over all the edges of the original graph:
-				   								    // If an edge connects to one of the vertices we want to remove, we don't add that edge to the graph, thus, removing the vertex from consideration.
-					if(vertsToRemove[0] == e.either() || vertsToRemove[1] == e.either() || vertsToRemove[0] == e.other(e.either()) || vertsToRemove[1] == e.other(e.either())) 
-						continue;
+				vertsToRemove[1] = j;		   	    				// Signal to remove vertex j from the graph.
+				for(Edge e : g.edges()) {	   	   					// Now iterate over all the edges of the original graph:
+					System.out.println(e.either() + " " + e.other(e.either()));
+					if (vertsToRemove[0] == e.either() ||   		// If an edge connects to one of the vertices we want to remove,
+					    vertsToRemove[1] == e.either() ||   		// we don't add that edge to the graph, thus, removing the vertex from consideration.
+					    vertsToRemove[0] == e.other(e.either()) || 
+					    vertsToRemove[1] == e.other(e.either())  ) {
+					    System.out.println("edge was removed");
+					    continue;
+					}
 					else u.addEdge(e);
 				}
 				cc = new CC(u);						// Pass new graph through connected component object
@@ -202,27 +207,8 @@ public class NetworkAnalysis {
 		        	System.out.println("Graph is not connected after vertices "+vertsToRemove[0]+" and "+vertsToRemove[1]+" were removed.");
 		        	disconnected = true;			// Set disconnected flag to true, since a pair exists that disconnects the graph
 		        }
-		        //StdOut.println(numOfComponents + " components");
-
-		        /*
-		        // compute list of vertices in each connected component
-		        Queue<Integer>[] components = (Queue<Integer>[]) new Queue[numOfComponents];
-		        for (int i = 0; i < numOfComponents; i++) {
-		            components[i] = new Queue<Integer>();
-		        }
-		        for (int j = 0; j < g.V(); j++) {
-		            components[cc.id(j)].enqueue(j);
-		        }
-
-		        // print results
-		        for (int i = 0; i < numOfComponents; i++) {
-		            for (int j : components[i]) {
-		                StdOut.print(j + " ");
-		            }
-		            StdOut.println();
-		        }*/
 			}
-			repeatedPair = true; //
+			repeatedPair = true; // Set to true so we don't repeat a pair of vertices
 		}
 		if(!disconnected) System.out.println("Graph remained connected after all vertex pairs were removed.");
 	}

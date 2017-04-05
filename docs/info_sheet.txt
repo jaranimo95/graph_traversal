@@ -81,7 +81,6 @@ correctly?:
 
   - lowestLatencyPath() will not calculate some of the paths between vertices, especially if source vertex is greater than destination vertex
   - maxFlow() has the same issue as lowestLatencyPath()
-  - articulationPoints() doesn't work right, but most of the logic is there. Here's to partial credit!
 
 
 
